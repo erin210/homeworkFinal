@@ -72,7 +72,7 @@ const getTodosData = async () => {
     })
     if (res.data.status) {
       if (res.data.data.length === 0) {
-        todoMsg.value = '無待辦事項'
+        todoMsg.value = '目前尚無待辦事項'
       } else {
         todoMsg.value = ''
         res.data.data.forEach((item) => {
@@ -85,7 +85,7 @@ const getTodosData = async () => {
         getTodo.value = res.data.data
       }
     } else {
-      todoMsg.value = '無待辦事項'
+      todoMsg.value = '目前尚無待辦事項'
     }
   } catch (error) {
     console.log(error)
@@ -375,7 +375,7 @@ const checkListOK = computed(() => {
               </li>
             </ul>
             <p>{{ todoMsg }}</p>
-            <div class="todoList_statistics">
+            <div class="todoList_statistics" v-if="!todoMsg">
               <p>{{ checkListOK.length }} 個已完成項目</p>
             </div>
             <!-- {{ getTodo }} -->
