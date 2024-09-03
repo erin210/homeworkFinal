@@ -183,11 +183,18 @@ const cancelField = () => {
   editIndex.value = null
 }
 const saveField = async (id, index) => {
-  try {
-    console.log(editField.value)
+  // const listContent = getTodo.value[index].content
+  console.log(editField.value)
 
-    getTodo.value[index].content = editField.value
-    editIndex.value = null
+  try {
+    if (editField.value === '') {
+      editIndex.value = null
+    } else {
+      getTodo.value[index].content = editField.value
+      editIndex.value = null
+      editField.value = ''
+    }
+
     const res = await axios.put(
       `${apiURL}/todos/${id}`,
       {
