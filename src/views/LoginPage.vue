@@ -1,5 +1,4 @@
 <script setup>
-// import router from '@/router'
 import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -9,7 +8,6 @@ const signInToken = ref(null)
 const router = useRouter()
 
 //登入----------------------
-
 const signInField = ref({
   email: '',
   password: ''
@@ -21,15 +19,12 @@ const errMsg = ref('')
 const signInPost = async () => {
   try {
     const res = await axios.post(`${apiURL}/users/sign_in`, signInField.value)
-    // console.log(res)
     signStatus.value = res.data.status
     signInToken.value = res.data.token
     signInOK.value = `Hello! ` + res.data.nickname + `! 登入成功囉！`
     alert(signInOK.value)
-    // console.log('hi', signUpField.value)
 
     document.cookie = `customToken=${res.data.token}; expires=${res.data.exp}; path=/`
-    // console.log('UID:', checkUser.value.uid)
     signCheck()
   } catch (error) {
     console.log(error)
@@ -62,8 +57,6 @@ const signCheck = async () => {
   checkUser.value = res.data
 
   router.push({ path: '/todolist' })
-
-  //   getTodosData()
 }
 
 signCheck()
@@ -111,7 +104,6 @@ signCheck()
           />
           <span v-if="!signInField.password">此欄位不可留空</span>
           <input class="formControls_btnSubmit" type="button" @click="signInPost" value="登入" />
-          <!-- <a class="formControls_btnLink" href="#signUpPage">註冊帳號</a> -->
           <RouterLink class="formControls_btnLink" to="/signup">註冊帳號</RouterLink>
         </form>
       </div>

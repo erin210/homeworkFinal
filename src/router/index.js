@@ -17,24 +17,7 @@ const router = createRouter({
     {
       path: '/todolist',
       name: 'TodoList',
-      component: () => import('../views/TodoList.vue'),
-      children: [
-        {
-          path: '/todoall',
-          name: 'todoAll',
-          component: () => import('../views/TodoAll.vue')
-        },
-        {
-          path: '/todook',
-          name: 'todoOk',
-          component: () => import('../views/TodoOk.vue')
-        },
-        {
-          path: '/todonot',
-          name: 'todoNot',
-          component: () => import('../views/TodoNot.vue')
-        }
-      ]
+      component: () => import('../views/TodoList.vue')
     }
   ]
 })

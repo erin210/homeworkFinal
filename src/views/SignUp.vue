@@ -17,7 +17,6 @@ const signUpField = ref({
 })
 
 const signUpPost = async () => {
-
   try {
     const res = await axios.post(`${apiURL}/users/sign_up`, signUpField.value)
     console.log(res)
@@ -26,7 +25,6 @@ const signUpPost = async () => {
     router.push({ path: '/' })
   } catch (error) {
     console.log(error.message)
-    // errMsg.value = res.message
   }
 }
 </script>
@@ -98,7 +96,6 @@ const signUpPost = async () => {
             value="註冊帳號"
             @click="signUpPost"
           />
-          <!-- <a class="formControls_btnLink" href="#loginPage">登入</a> -->
           <RouterLink class="formControls_btnLink" to="/">登入</RouterLink>
         </form>
       </div>

@@ -1,15 +1,12 @@
 <script setup>
 import axios from 'axios'
 import { computed, ref } from 'vue'
-// import { useRouter } from 'vue-router'
 
 const apiURL = 'https://todolist-api.hexschool.io'
 const signInToken = ref(null)
 const errMsg = ref('')
-// const router = useRouter()
 
 //驗證----------------------
-
 const checkUser = ref({
   nickname: '',
   uid: ''
@@ -32,7 +29,7 @@ const signCheck = async () => {
   })
   checkUser.value = res.data
 
-  //   getTodosData()
+  getTodosData()
 }
 
 signCheck()
@@ -41,7 +38,6 @@ signCheck()
 const signOutCheck = ref('')
 
 const signoutPost = async () => {
-  // console.log(signInToken.value)
   try {
     const res = await axios.post(
       `${apiURL}/users/sign_out`,
@@ -56,8 +52,6 @@ const signoutPost = async () => {
     signOutCheck.value = '您已登出囉！'
     alert(signOutCheck.value)
     checkUser.value.uid = ''
-
-    // router.push({ path: '/' })
 
     console.log(res)
   } catch (error) {
@@ -76,13 +70,11 @@ const getTodosData = async () => {
         Authorization: signInToken.value
       }
     })
-    // console.log(res.data.data)
     if (res.data.status) {
       if (res.data.data.length === 0) {
         todoMsg.value = '無待辦事項'
       } else {
         todoMsg.value = ''
-        // console.log(res.data.data)
         res.data.data.forEach((item) => {
           const createTime = item.createTime
           const date = new Date(createTime * 1000)
