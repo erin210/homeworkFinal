@@ -73,6 +73,7 @@ const getTodosData = async () => {
     if (res.data.status) {
       if (res.data.data.length === 0) {
         todoMsg.value = '目前尚無待辦事項'
+        getTodo.value = res.data.data
       } else {
         todoMsg.value = ''
         res.data.data.forEach((item) => {
@@ -150,6 +151,13 @@ const deleteTodos = async (id) => {
 
     console.log('刪除成功', res)
     getTodosData()
+    console.log(getTodo.value)
+
+    // if (getTodo.value.length === 0) {
+    //   todoMsg.value = '目前尚無待辦事項'
+    // } else {
+    //   todoMsg.value = ''
+    // }
   } catch (error) {
     console.log(error)
     errMsg.value = error.response?.data?.message || '刪除失敗'
@@ -214,6 +222,8 @@ const checkListNot = computed(() => {
 const checkListOK = computed(() => {
   return getTodo.value.filter((item) => item.status === true)
 })
+
+console.log(checkListNot.value.length)
 </script>
 
 <template>
@@ -241,23 +251,32 @@ const checkListOK = computed(() => {
         <div class="todoList_list">
           <ul class="todoList_tab">
             <li>
-              <a href="#" :class="{ active: activeTab === 'taball' }" @click="selectTab('taball')"
+              <a
+                href="#"
+                :class="{ active: activeTab === 'taball' }"
+                @click.prevent="selectTab('taball')"
                 >全部</a
               >
             </li>
             <li>
-              <a href="#" :class="{ active: activeTab === 'tabnot' }" @click="selectTab('tabnot')"
+              <a
+                href="#"
+                :class="{ active: activeTab === 'tabnot' }"
+                @click.prevent="selectTab('tabnot')"
                 >待完成</a
               >
             </li>
             <li>
-              <a href="#" :class="{ active: activeTab === 'tabok' }" @click="selectTab('tabok')"
+              <a
+                href="#"
+                :class="{ active: activeTab === 'tabok' }"
+                @click.prevent="selectTab('tabok')"
                 >已完成</a
               >
             </li>
           </ul>
-          <div class="todoList_items">
-            <ul class="todoList_item" v-if="activeTab === 'taball'">
+          <div class="todoList_items" v-if="activeTab === 'taball'">
+            <ul class="todoList_item">
               <li v-for="(list, index) in getTodo" :key="list.id">
                 <label class="todoList_label" :for="list.id" v-if="index !== editIndex">
                   <input
@@ -296,7 +315,16 @@ const checkListOK = computed(() => {
                 </a>
               </li>
             </ul>
-            <ul class="todoList_item" v-if="activeTab === 'tabnot'">
+            <p>{{ todoMsg }}</p>
+            <div class="todoList_statistics" v-if="!todoMsg">
+              <p>
+                {{ checkListOK.length }} 個已完成項目 <br /><br />
+                {{ checkListNot.length }} 個待完成項目
+              </p>
+            </div>
+          </div>
+          <div class="todoList_items" v-if="activeTab === 'tabnot'">
+            <ul class="todoList_item">
               <li v-for="(list, index) in checkListNot" :key="list.id">
                 <label class="todoList_label" :for="list.id" v-if="index !== editIndex">
                   <input
@@ -335,7 +363,13 @@ const checkListOK = computed(() => {
                 </a>
               </li>
             </ul>
-            <ul class="todoList_item" v-if="activeTab === 'tabok'">
+            <p>{{ todoMsg }}</p>
+            <div class="todoList_statistics" v-if="!todoMsg">
+              <p>{{ checkListNot.length }} 個待完成項目</p>
+            </div>
+          </div>
+          <div class="todoList_items" v-if="activeTab === 'tabok'">
+            <ul class="todoList_item">
               <li v-for="(list, index) in checkListOK" :key="list.id">
                 <label class="todoList_label" :for="list.id" v-if="index !== editIndex">
                   <input
@@ -378,8 +412,9 @@ const checkListOK = computed(() => {
             <div class="todoList_statistics" v-if="!todoMsg">
               <p>{{ checkListOK.length }} 個已完成項目</p>
             </div>
-            <!-- {{ getTodo }} -->
           </div>
+
+          <!-- {{ getTodo }} -->
         </div>
       </div>
     </div>
